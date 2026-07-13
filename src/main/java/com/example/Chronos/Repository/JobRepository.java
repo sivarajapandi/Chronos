@@ -9,7 +9,11 @@ import java.util.List;
 import java.util.UUID;
 
 public interface JobRepository extends JpaRepository<Job, UUID> {
-    @Query("SELECT j FROM Job j WHERE j.status = 'PENDING' AND j.runAt <= :now")
+
+
+    @Query("SELECT j FROM Job j WHERE j.status in ('PENDING','RETRY_PENDING') AND j.runAt <= :now")
     List<Job> findDueJobs(LocalDateTime now);
+
+
 
 }

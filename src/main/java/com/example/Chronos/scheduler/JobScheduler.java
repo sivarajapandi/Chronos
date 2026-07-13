@@ -23,11 +23,17 @@ public class JobScheduler {
     @Scheduled(fixedRate = 5000)
     public void pollJobs() {
 
-        List<Job> jobs = jobRepository.findDueJobs(LocalDateTime.now());
+        //find the jobs with pending status and also the jobs that are with retry counts
 
+        List<Job> jobs =
+                jobRepository.findDueJobs(LocalDateTime.now());
+
+        //will it be executed at the right time ? as we are iterating and Executing
         for (Job job : jobs) {
-            jobService.processJob(job);
+            jobService.executeJob(job);
         }
+
+
 
     }
 

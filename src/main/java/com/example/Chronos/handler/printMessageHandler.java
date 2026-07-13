@@ -21,8 +21,7 @@ public class printMessageHandler implements JobHandler{
             JsonNode node = objectMapper.readTree(payload);
 
             if(!node.has("message")){
-                throw new IllegalArgumentException("payload must contains");
-
+                throw new IllegalArgumentException("payload must contains message");
             }
         }catch (Exception e){
             throw new IllegalArgumentException("Invalid payload format", e);

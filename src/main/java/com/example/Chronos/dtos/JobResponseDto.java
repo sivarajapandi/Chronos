@@ -10,6 +10,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class JobResponseDto {
+
     private UUID jobId;
 
     private String status;

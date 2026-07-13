@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.Chronos.Service.JobService;
+
 
 
 
@@ -30,8 +30,8 @@ public class JobController {
     @PostMapping
     public ResponseEntity<JobResponseDto> createJob(@Valid @RequestBody JobRequestDto request) {
         JobResponseDto response = jobService.createJob(request);
-
         return ResponseEntity.ok(response);
+
 
     }
 

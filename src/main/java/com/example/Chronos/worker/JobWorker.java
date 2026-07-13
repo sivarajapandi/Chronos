@@ -12,6 +12,8 @@ public class JobWorker {
         this.jobservice = jobservice;
     }
 
+    //it is simply delegating the job to the service, who should interact with the Handler then
+    //either the JobWorker or jobService 
     public void executeJob(Job job) {
         jobservice.executeJob(job);
     }

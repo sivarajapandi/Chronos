@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -26,6 +27,7 @@ public class Job {
 
     private LocalDateTime runAt;
 
+    //what is cronExpression and why it is used for the
     private String cronExpression;
 
     private int maxRetries;
@@ -37,6 +39,9 @@ public class Job {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "job")
+    private List<JobExecution> executions;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
