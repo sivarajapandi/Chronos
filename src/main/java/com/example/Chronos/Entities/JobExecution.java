@@ -18,7 +18,7 @@ public class JobExecution {
     @JoinColumn(name = "job_id")
     private Job job;
 
-    private LocalDateTime statrtTime;
+    private LocalDateTime startTime;
 
     private LocalDateTime CompletedAt;
 

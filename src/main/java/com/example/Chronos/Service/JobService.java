@@ -2,19 +2,28 @@ package com.example.Chronos.Service;
 
 import com.example.Chronos.Entities.Job;
 import com.example.Chronos.Entities.JobExecution;
+import com.example.Chronos.Exception.JobNotFoundException;
 import com.example.Chronos.Repository.JobExecutionRepository;
 import com.example.Chronos.Repository.JobRepository;
+import com.example.Chronos.dtos.JobExecutionResponseDto;
 import com.example.Chronos.dtos.JobRequestDto;
 import com.example.Chronos.dtos.JobResponseDto;
 import com.example.Chronos.handler.JobHandler;
 import com.example.Chronos.handler.JobHandlerRegistry;
 import com.example.Chronos.worker.JobWorker;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.logging.Logger;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class JobService {
@@ -112,7 +121,7 @@ public class JobService {
 
        execution.setJob(job);
        execution.setStatus("RUNNING");
-       execution.setStatrtTime(LocalDateTime.now());
+       execution.setStartTime(LocalDateTime.now());
 
        jobExecutionRepository.save(execution);
 
@@ -152,4 +161,46 @@ public class JobService {
 
 
     }
+
+    public List<JobResponseDto> getAllJobs() {
+
+        List<JobResponseDto> listOfJobs = new ArrayList<>();
+
+        listOfJobs=jobRepository.findAll().stream()
+                .map(job-> {
+                    return JobResponseDto.builder()
+                            .status(job.getStatus())
+                            .runAt(job.getRunAt())
+                            .jobId(job.getId())
+                            .build();
+                }).toList();
+
+        return listOfJobs;
+
+
+    }
+
+    public JobResponseDto getJobById(UUID id) {
+
+        return jobRepository.findById(id)
+                .map(job -> JobResponseDto.builder()
+                        .jobId(job.getId())
+                        .status(job.getStatus())
+                        .runAt(job.getRunAt())
+                        .build())
+                .orElseThrow(() -> new JobNotFoundException(id));
+    }
+
+
+    public List<JobExecutionResponseDto> getAllJobExecutionsForId(UUID id) {
+        return jobExecutionRepository.findByJob_Id(id).stream().map(job-> JobExecutionResponseDto.builder()
+                .jobExecutionId(job.getId())
+                .startTime(job.getStartTime())
+                .endTime(job.getCompletedAt())
+                .status(job.getStatus())
+                .message(job.getMessage())
+                .build()).toList();
+    }
+
+
 }

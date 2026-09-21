@@ -17,7 +17,4 @@ public class JobResponseDto {
 
     private LocalDateTime runAt;
 
-
-
-
 }

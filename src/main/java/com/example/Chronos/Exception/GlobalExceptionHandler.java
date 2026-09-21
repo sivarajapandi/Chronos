@@ -25,4 +25,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(response);
 
     }
+    @ExceptionHandler(JobNotFoundException.class)
+    public ResponseEntity<Map<String,Object>> handleJobNotFoundException(JobNotFoundException ex){
+        Map<String,Object> response =new HashMap<>();
+
+        response.put("status",403);
+        response.put("errors",ex.getMessage());
+
+        return ResponseEntity.badRequest().body(response);
+    }
+
+
 }
